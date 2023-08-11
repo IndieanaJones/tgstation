@@ -71,7 +71,9 @@
 	/// The maximum charge the rift can have.
 	var/max_charge = 300
 	/// How many carp spawns it has available.
-	var/carp_stored = 1
+	var/carp_stored = 0
+	/// How many shark spawns it has available.
+	var/sharks_stored = 1
 	/// A reference to the Space Dragon antag that created it.
 	var/datum/antagonist/space_dragon/dragon
 	/// Current charge state of the rift.
@@ -86,7 +88,7 @@
 	var/datum/proximity_monitor/advanced/gravity/warns_on_entrance/gravity_aura
 
 /datum/armor/structure_carp_rift
-	energy = 100
+	energy = 80
 	bomb = 50
 	bio = 100
 	fire = 100
@@ -228,7 +230,7 @@
  * * mob/user - The ghost which will take control of the carp.
  */
 /obj/structure/carp_rift/proc/summon_carp(mob/user)
-	if(carp_stored <= 0)//Not enough carp points
+	if(carp_stored <= 0 && sharks_stored <= 0)//Not enough carp points
 		return FALSE
 	var/is_listed = FALSE
 	if (user.ckey in ckey_list)
@@ -239,13 +241,13 @@
 	var/carp_ask = tgui_alert(user, "Become a carp?", "Carp Rift", list("Yes", "No"))
 	if(carp_ask != "Yes" || QDELETED(src) || QDELETED(user))
 		return FALSE
-	if(carp_stored <= 0)
+	if(carp_stored <= 0 && sharks_stored <= 0)
 		to_chat(user, span_warning("The rift already summoned enough carp!"))
 		return FALSE
 
 	if(isnull(dragon))
 		return
-	var/mob/living/newcarp = new dragon.minion_to_spawn(loc)
+	var/mob/living/newcarp = (sharks_stored > 0 ? new dragon.strong_minion_to_spawn(loc) : new dragon.minion_to_spawn(loc))
 	newcarp.faction = dragon.owner.current.faction
 	newcarp.AddElement(/datum/element/nerfed_pulling, GLOB.typecache_general_bad_things_to_easily_move)
 	newcarp.AddElement(/datum/element/prevent_attacking_of_types, GLOB.typecache_general_bad_hostile_attack_targets, "this tastes awful!")
@@ -259,8 +261,11 @@
 	newcarp.mind.add_antag_datum(carp_antag)
 	dragon.carp += newcarp.mind
 	to_chat(newcarp, span_boldwarning("You have arrived in order to assist the space dragon with securing the rifts. Do not jeopardize the mission, and protect the rifts at all costs!"))
-	carp_stored--
-	if(carp_stored <= 0 && charge_state < CHARGE_COMPLETED)
+	if(sharks_stored > 0)
+		sharks_stored--
+	else
+		carp_stored--
+	if(carp_stored <= 0 && sharks_stored <= 0 && charge_state < CHARGE_COMPLETED)
 		icon_state = "carp_rift"
 		set_light_color(LIGHT_COLOR_BLUE)
 		update_light()

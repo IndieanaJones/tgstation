@@ -32,3 +32,8 @@
 	melee_damage_upper += rand(10,20)
 	maxHealth += rand(30,60)
 	health = maxHealth
+
+/mob/living/basic/carp/mega/advanced
+	obj_damage = 25
+	maxHealth = 35
+	health = 35

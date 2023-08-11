@@ -250,6 +250,7 @@
 	new_overlays += disk_overlay
 
 /mob/living/basic/carp/advanced
+	maxHealth = 40
 	health = 40
 	obj_damage = 15
 

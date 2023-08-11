@@ -22,6 +22,8 @@
 	var/objective_complete = FALSE
 	/// What mob to spawn from ghosts using this dragon's rifts
 	var/minion_to_spawn = /mob/living/basic/carp/advanced
+	/// What mob to spawn for strong spawns from ghosts using this dragon's rifts
+	var/strong_minion_to_spawn = /mob/living/basic/carp/mega/advanced
 	/// What AI mobs to spawn from this dragon's rifts
 	var/ai_to_spawn = /mob/living/basic/carp
 	/// Wavespeak mind linker, to allow telepathy between dragon and carps
