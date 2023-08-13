@@ -395,17 +395,30 @@
 	overlay.appearance_flags = RESET_COLOR
 	add_overlay(overlay)
 	playsound(src, 'sound/effects/gravhit.ogg', 100, TRUE)
-	for (var/mob/living/candidate in view(gust_distance, src))
-		if(candidate == src || candidate.faction_check_mob(src))
+	for (var/atom/movable/candidate in view (gust_distance, src))
+		if(candidate.anchored)
 			continue
-		visible_message(span_boldwarning("[candidate] is knocked back by the gust!"))
-		to_chat(candidate, span_userdanger("You're knocked back by the gust!"))
+		if(isliving(candidate))
+			var/mob/living/living_candidate = candidate
+			if(living_candidate == src || living_candidate.faction_check_mob(src))
+				continue
+			visible_message(span_boldwarning("[living_candidate] is knocked back by the gust!"))
+			to_chat(living_candidate, span_userdanger("You're knocked back by the gust!"))
+			living_candidate.Paralyze(50)
 		var/dir_to_target = get_dir(get_turf(src), get_turf(candidate))
-		var/throwtarget = get_edge_target_turf(target, dir_to_target)
+		var/throwtarget = get_edge_target_turf(candidate, dir_to_target)
 		candidate.safe_throw_at(throwtarget, 10, 1, src)
-		candidate.Paralyze(50)
+
 	addtimer(CALLBACK(src, PROC_REF(reset_status)), 4 + ((tiredness * tiredness_mult) / 10))
 	tiredness = tiredness + (gust_tiredness * tiredness_mult)
+
+/obj/item/space_dragon_rock
+	name = "melted metal sphere"
+	desc = "A strange looking metal sphere. It seems warm to the touch."
+	icon = 'icons/obj/antags/space_dragon_rock.dmi'
+	icon_state = "rock"
+	throwforce = 20
+	interaction_flags_item = 0
 
 /mob/living/simple_animal/hostile/space_dragon/spawn_with_antag
 
