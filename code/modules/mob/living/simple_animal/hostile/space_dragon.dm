@@ -75,6 +75,8 @@
 	var/tearing_wall = FALSE
 	/// The ability to make your sprite smaller
 	var/datum/action/small_sprite/space_dragon/small_sprite
+	/// The ability to vomit up metal spheres
+	var/datum/action/cooldown/vomit_metal_sphere/summon_sphere
 	/// The color of the space dragon.
 	var/chosen_color
 	/// Minimum devastation damage dealt coefficient based on max health
@@ -87,6 +89,8 @@
 	AddElement(/datum/element/simple_flying)
 	add_traits(list(TRAIT_SPACEWALK, TRAIT_FREE_HYPERSPACE_MOVEMENT, TRAIT_NO_FLOATING_ANIM, TRAIT_HEALS_FROM_CARP_RIFTS), INNATE_TRAIT)
 	AddElement(/datum/element/content_barfer)
+	summon_sphere = new
+	summon_sphere.Grant(src)
 	small_sprite = new
 	small_sprite.Grant(src)
 	RegisterSignal(small_sprite, COMSIG_ACTION_TRIGGER, PROC_REF(add_dragon_overlay))
@@ -419,6 +423,71 @@
 	icon_state = "rock"
 	throwforce = 20
 	interaction_flags_item = 0
+	///Has the sphere started its detonation sequence?
+	var/is_bomb_active = FALSE
+	///How long it takes for the sphere to detonate
+	var/detonation_time = 10 SECONDS
+	///The timer for the sphere's detonation
+	var/det_timer
+
+/obj/item/space_dragon_rock/throw_at(atom/target, range, speed, mob/thrower, spin, diagonals_first, datum/callback/callback, force, gentle, quickstart)
+	. = ..()
+	if(!is_bomb_active)
+		begin_detonation()
+
+/obj/item/space_dragon_rock/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(isliving(hit_atom))
+		var/mob/living/living_target = hit_atom
+		living_target.Paralyze(1.5 SECONDS)
+		living_target.Knockdown(8 SECONDS)
+
+/obj/item/space_dragon_rock/attackby(obj/item/item_used, mob/user, params)
+	if(!is_bomb_active && (item_used.tool_behaviour == TOOL_MINING || istype(item_used, /obj/item/resonator) || item_used.force >= 10))
+		begin_detonation()
+		return
+
+	if(is_bomb_active && (istype(item_used, /obj/item/mining_scanner) || istype(item_used, /obj/item/t_scanner/adv_mining_scanner) || item_used.tool_behaviour == TOOL_MULTITOOL))
+		defuse(user)
+		return
+
+	return ..()
+
+/obj/item/space_dragon_rock/proc/defuse(mob/defuser)
+	is_bomb_active = FALSE
+	if(det_timer)
+		deltimer(det_timer)
+	defuser?.visible_message(span_notice("The sphere suddenly stops shaking."), span_notice("You somehow managed to stop the sphere from shaking..."))
+
+/obj/item/space_dragon_rock/proc/begin_detonation()
+	is_bomb_active = TRUE
+	Shake(duration = detonation_time)
+	det_timer = addtimer(CALLBACK(src, PROC_REF(detonate)), detonation_time, TIMER_STOPPABLE)
+
+/obj/item/space_dragon_rock/proc/detonate()
+	explosion(src, heavy_impact_range = 0, light_impact_range = 2, flame_range = 3, flash_range = 0, adminlog = FALSE)
+	qdel(src)
+
+/datum/action/cooldown/vomit_metal_sphere
+	name = "Produce Metal Sphere"
+	desc = "Produces a metal sphere that can be moved with wing gust and kicked to carp to bounce it off them. Explodes after a duration."
+	button_icon = 'icons/obj/antags/space_dragon_rock.dmi'
+	button_icon_state = "rock"
+	background_icon_state = "bg_alien"
+	overlay_icon_state = "bg_alien_border"
+	check_flags = AB_CHECK_CONSCIOUS | AB_CHECK_INCAPACITATED
+	cooldown_time = 30 SECONDS
+	melee_cooldown_time = 0
+
+/datum/action/cooldown/vomit_metal_sphere/Activate()
+	. = ..()
+	playsound(get_turf(owner), 'sound/creatures/space_dragon_spit.ogg', 80, FALSE)
+	var/turf/turf_facing = get_step(get_turf(owner), owner.dir)
+	if(turf_facing && !turf_facing.is_blocked_turf(exclude_mobs = TRUE))
+		new /obj/item/space_dragon_rock(turf_facing)
+	else
+		new /obj/item/space_dragon_rock(owner.loc)
+
 
 /mob/living/simple_animal/hostile/space_dragon/spawn_with_antag
 
