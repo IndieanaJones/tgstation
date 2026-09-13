@@ -60,6 +60,7 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 		/obj/item/storage/backpack/satchel/sec = 3,
 		/obj/item/storage/backpack/duffelbag/sec = 3,
 		/obj/item/storage/backpack/messenger/sec = 3,
+		/obj/item/clothing/mask/balaclava = 3,
 	)
 	premium = list(
 		/obj/item/clothing/under/rank/security/officer/formal = 3,
@@ -187,9 +188,6 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 		/obj/item/clothing/head/utility/hardhat/orange = 3,
 		/obj/item/clothing/under/rank/cargo/tech = 3,
 		/obj/item/clothing/under/rank/cargo/tech/skirt = 3,
-		/obj/item/clothing/under/rank/cargo/tech/alt = 3,
-		/obj/item/clothing/under/rank/cargo/tech/skirt/alt = 3,
-		/obj/item/clothing/suit/toggle/cargo_tech = 3,
 		/obj/item/clothing/suit/hooded/wintercoat/cargo = 3,
 		/obj/item/clothing/suit/hazardvest = 3,
 		/obj/item/clothing/gloves/fingerless = 3,
@@ -482,8 +480,7 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 		/obj/item/radio/headset/headset_srv = 2,
 	)
 	refill_canister = /obj/item/vending_refill/wardrobe/jani_wardrobe
-	default_price = PAYCHECK_CREW
-	extra_price = PAYCHECK_COMMAND * 0.8
+	all_products_free = TRUE
 	payment_department = ACCOUNT_SRV
 	light_color = COLOR_STRONG_MAGENTA
 

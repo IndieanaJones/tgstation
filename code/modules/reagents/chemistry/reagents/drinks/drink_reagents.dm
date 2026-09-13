@@ -472,8 +472,6 @@
 	affected_mob.remove_status_effect(/datum/status_effect/drowsiness)
 	affected_mob.AdjustSleeping(-4 SECONDS * REM * seconds_per_tick)
 	affected_mob.adjust_bodytemperature(-5 * REM * TEMPERATURE_DAMAGE_COEFFICIENT * seconds_per_tick, affected_mob.get_body_temp_normal())
-	if (SSradiation.can_irradiate_basic(affected_mob))
-		affected_mob.AddComponent(/datum/component/irradiated)
 
 /datum/reagent/consumable/rootbeer
 	name = "Root Beer"
@@ -1298,3 +1296,18 @@
 	var/obj/item/organ/stomach/ethereal/stomach = exposed_carbon.get_organ_slot(ORGAN_SLOT_STOMACH)
 	if(istype(stomach))
 		stomach.adjust_charge(reac_volume * 0.02 * ETHEREAL_CHARGE_NORMAL)
+
+/datum/reagent/consumable/lean
+	name = "Lean"
+	description = "The drank that makes you go wheezy."
+	color = "#DE55ED"
+	quality = DRINK_NICE
+	taste_description = "purple and a hint of opioid"
+	addiction_types = list(/datum/addiction/opioids = 6)
+	chemical_flags = REAGENT_CAN_BE_SYNTHESIZED
+
+/datum/reagent/consumable/lean/on_mob_life(mob/living/carbon/drinker, seconds_per_tick, times_fired)
+	. = ..()
+	drinker.set_slurring_if_lower(1 SECONDS * REM * seconds_per_tick)
+	drinker.set_drugginess(1 MINUTES * REM * seconds_per_tick)
+	drinker.adjust_drowsiness(2 SECONDS * REM * seconds_per_tick)
