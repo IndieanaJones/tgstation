@@ -3,11 +3,11 @@
 	description = "Distribute supplies to the departments that ordered them, \
 		collect empty crates, load and unload the supply shuttle, \
 		ship bounty cubes."
-	department_head = list(JOB_QUARTERMASTER)
+	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
 	total_positions = 5
 	spawn_positions = 3
-	supervisors = SUPERVISOR_QM
+	supervisors = SUPERVISOR_HOP
 	exp_granted_type = EXP_TYPE_CREW
 	config_tag = "CARGO_TECHNICIAN"
 
@@ -46,7 +46,6 @@
 	id_trim = /datum/id_trim/job/cargo_technician
 	uniform = /obj/item/clothing/under/rank/cargo/tech
 	belt = /obj/item/modular_computer/pda/cargo
-	suit = /obj/item/clothing/suit/toggle/cargo_tech
 	ears = /obj/item/radio/headset/headset_cargo
 	l_hand = /obj/item/universal_scanner
 
