@@ -270,9 +270,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// Mobs with this trait are allowed to use silicon emotes
 #define TRAIT_SILICON_EMOTES_ALLOWED "silicon_emotes_allowed"
 
-/// This trait designate that the mob was originally a monkey
-#define TRAIT_BORN_MONKEY "born_as_a_monkey"
-
 /// Added to a mob, allows that mob to experience flavour-based moodlets when examining food
 #define TRAIT_REMOTE_TASTING "remote_tasting"
 
@@ -616,9 +613,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 ///Makes the player appear as their respective job in Binary Talk rather than being a 'Default Cyborg'.
 #define TRAIT_DISPLAY_JOB_IN_BINARY "display job in binary"
-
-/// Trait that determines vulnerability to being stunned from a shove
-#define TRAIT_STUN_ON_NEXT_SHOVE "stun on next shove"
 
 /// Trait that determines whether our mob gains more strength from drinking during a fist fight
 #define TRAIT_DRUNKEN_BRAWLER "drunken brawler"
@@ -1148,11 +1142,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 /// This atom is currently spinning.
 #define TRAIT_SPINNING "spinning"
 
-/// This limb can't be torn open anymore
-#define TRAIT_IMMUNE_TO_CRANIAL_FISSURE "immune_to_cranial_fissure"
-/// Trait given if the mob has a cranial fissure.
-#define TRAIT_HAS_CRANIAL_FISSURE "has_cranial_fissure"
-
 /// Denotes that this id card was given via the job outfit, aka the first ID this player got.
 #define TRAIT_JOB_FIRST_ID_CARD "job_first_id_card"
 /// ID cards with this trait will attempt to forcibly occupy the front-facing ID card slot in wallets.
@@ -1351,9 +1340,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 ///Trait given to a turf that should not be allowed to be terraformed, such as turfs holding ore vents.
 #define TRAIT_NO_TERRAFORM "no_terraform"
-
-///Trait that prevents mobs from stopping by grabbing objects
-#define TRAIT_NOGRAV_ALWAYS_DRIFT "nograv_always_drift"
 
 ///Mobs with these trait do not get italicized/quiet speech when speaking in low pressure
 #define TRAIT_SPEECH_BOOSTER "speech_booster"

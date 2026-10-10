@@ -121,6 +121,11 @@
 #define ROLE_CYBER_TAC "Cyber Tac"
 #define ROLE_NETGUARDIAN "NetGuardian Prime"
 
+//Bloodsuckers
+#define ROLE_BLOODSUCKER "Bloodsucker"
+#define ROLE_VAMPIRICACCIDENT "Vampiric Accident"
+#define ROLE_BLOODSUCKERBREAKOUT "Bloodsucker Breakout"
+
 /// This defines the antagonists you can operate with in the settings.
 /// Keys are the antagonist, values are the number of days since the player's
 /// first connection in order to play.
@@ -137,6 +142,7 @@ GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_TRAITOR = 0,
 	ROLE_WIZARD = 14,
 	ROLE_SPY = 0,
+	ROLE_BLOODSUCKER = 0,
 
 	// Midround
 	ROLE_ABDUCTOR = 0,
@@ -158,12 +164,14 @@ GLOBAL_LIST_INIT(special_roles, list(
 	ROLE_SPIDER = 0,
 	ROLE_WIZARD_MIDROUND = 14,
 	ROLE_VOIDWALKER = 0,
+	ROLE_BLOODSUCKERBREAKOUT = 0,
 
 	// Latejoin
 	ROLE_HERETIC_SMUGGLER = 0,
 	ROLE_PROVOCATEUR = 14,
 	ROLE_SYNDICATE_INFILTRATOR = 0,
 	ROLE_STOWAWAY_CHANGELING = 0,
+	ROLE_VAMPIRICACCIDENT = 0,
 
 	// I'm not too sure why these are here, but they're not moving.
 	ROLE_GLITCH = 0,

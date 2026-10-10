@@ -61,8 +61,8 @@
 	knockdown,
 	lube_flags = NONE,
 	datum/callback/on_slip_callback,
-	paralyze,
-	force_drop = FALSE,
+	paralyze = 1 SECONDS,
+	force_drop = TRUE,
 	slot_whitelist,
 	datum/callback/can_slip_callback,
 )
